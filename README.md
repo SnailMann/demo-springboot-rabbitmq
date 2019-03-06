@@ -50,3 +50,8 @@ public class RabbitConfig {
 
 只有direct有默认的交换机，默认绑定所有的队列，并且routing key是队列的名称
 其他的几种方式没有默认的交换机，没有默认绑定；对于默认的direct交换机，从默认的交换机中，不允许显示的绑定队列,删除队列
+
+
+### 生产端的Confirm和Return机制
+
+Confirm
