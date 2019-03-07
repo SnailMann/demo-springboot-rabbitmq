@@ -30,6 +30,11 @@ public class RabbitConfig {
         return new RabbitAdmin(connectionFactory);
     }
 
+    /**
+     * 消费者监听的连接工厂
+     *
+     * @return
+     */
     @Bean
     public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
@@ -38,6 +43,11 @@ public class RabbitConfig {
         return factory;
     }
 
+    /**
+     * RabbitTempalte的工厂
+     *
+     * @return
+     */
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();

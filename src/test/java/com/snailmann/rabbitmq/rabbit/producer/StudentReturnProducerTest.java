@@ -12,6 +12,9 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
+/**
+ * 生产者开启Return测试
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StudentReturnProducerTest {
@@ -31,6 +34,18 @@ public class StudentReturnProducerTest {
      */
     @Test
     public void directDefaultSend() {
-        studentReturnProducer.directDefaultSend("不存在的RoutingKey", student);
+        studentReturnProducer.directDefaultSend("student", student);
+    }
+
+    /**
+     * 测试失败
+     */
+    public void directCustomSend() throws InterruptedException {
+        studentReturnProducer.directCustomSend("不存在的交换机", "不存在的路由键", student);
+    }
+
+
+    public void fanoutSend() throws InterruptedException {
+        studentReturnProducer.fanoutSend("amq.fanout",student);
     }
 }

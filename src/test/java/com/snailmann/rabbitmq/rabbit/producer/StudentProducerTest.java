@@ -12,6 +12,11 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
+
+/**
+ * RabbitTempalte生产端普通测试
+ * 三种发生方式 direct,topic,fanout
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StudentProducerTest {

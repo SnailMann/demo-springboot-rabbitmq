@@ -10,6 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.Random;
 
+/**
+ * 生产者开启Confirm机制测试
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StudentConfirmProducerTest {
@@ -27,11 +30,20 @@ public class StudentConfirmProducerTest {
     StudentConfirmProducer studentConfirmProducer;
 
     /**
-     * ok
+     * 测试成功案例
      */
     @Test
-    public void directDefaultSend() {
+    public void directDefaultSend() throws InterruptedException {
         studentConfirmProducer.directDefaultSend("student", student);
+    }
+
+    /**
+     * 测试失败案例
+     *
+     * @throws InterruptedException
+     */
+    public void directCustomSend() throws InterruptedException {
+        studentConfirmProducer.directCustomSend("不存的交换机", "student", student);
     }
 
 }

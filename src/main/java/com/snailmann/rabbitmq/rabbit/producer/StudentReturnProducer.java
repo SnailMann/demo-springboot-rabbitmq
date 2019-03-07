@@ -34,4 +34,33 @@ public class StudentReturnProducer {
     }
 
 
+    /**
+     * 点对点，直接模式 | 使用自定义的交换机和自定义的队列
+     * 测试失败
+     *
+     * @param student
+     */
+    public void directCustomSend(String exchange, String routingKey, Student student) throws InterruptedException {
+        log.info("direct custom exchange with custom routing key send : {}", student);
+
+        rabbitReturnTemplate.convertAndSend("不存在的队列", routingKey, student);
+
+
+    }
+
+
+    /**
+     * 广播模式
+     *
+     *
+     * @param student
+     */
+    public void fanoutSend(String exchange, Student student) throws InterruptedException {
+        log.info("fanout send : {}", student);
+        rabbitReturnTemplate.convertAndSend(exchange, null, student);
+
+
+    }
+
+
 }
