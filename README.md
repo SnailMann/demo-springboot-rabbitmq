@@ -11,6 +11,12 @@ The following guides illustrates how to use certain features concretely:
 - 生产者不管消息投递的队列是什么，只需要关系要投递的交换机是什么，路由键是什么？具体路由到那个队列，是交换局根据路由键去做的
 - 消息者不需要管我监听那个交换机，路由键是什么，只需要关心我需要从哪个队列消费消息
 
+### RabbitMQ常要解决的问题
+
+- 消息重复消费问题
+- 消息投递是否成功问题
+- 消息消费失败问题
+
 ### RabbitMQ的配置
 
 - 配置 | 可以使用Jackson2JsonMessageConverter来代替默认的序列化，不替代则无法自动转换对象为String
@@ -45,6 +51,10 @@ public class RabbitConfig {
 
 
 ```
+
+- 如果项目有消费者，则需要配置rabbitListenerContainerFactory
+- 如果项目有生成者，则需要配置rabbitTemplate
+
 
 
 ### RabbitMQ的四种模式
@@ -95,6 +105,13 @@ public class RabbitConfig {
        }
 ```
 
+该配置可以代替cachingConnectionFactory.setPublisherConfirms(true);
+```yaml
+spring:
+  rabbitmq:
+    publisher-confirms: true 
+```
+
 测试：
 
 - 只要生产端发送的消息到达指定交换机exchange，回调函数的ack就是true
@@ -143,6 +160,14 @@ mandatory的作用:
     }
 
 ```
+ 
+
+该配置可以代替cachingConnectionFactory.setPublisherReturns(true);
+```yaml
+spring:
+  rabbitmq:
+    publisher-returns: true 
+```
 
 测试：
 
@@ -150,5 +175,76 @@ mandatory的作用:
 - 只要生产端发送的消息没有到达队列，就代表不成功(应该不存在到达一个队列，没有到达另一个队列的情况)
 
 
+### 自动ACK
+
+默认的情况就是自动ACK,消费者在拿到消息后，消费阶段没有抛异常，则会自动ack; 如果抛出了异常则会自定nack
+如果抛出异常后，被我们捕获了，会被认为消费成功，自动ack
 
 
+### 手动ACK
+
+消息确认模式有：
+- AcknowledgeMode.NONE：自动确认
+- AcknowledgeMode.AUTO：根据情况确认
+- AcknowledgeMode.MANUAL：手动确认
+
+
+意义：
+
+- 可以让开发人员自行决定是否要手动ack，自行ack或nack可以增加程序的灵活性，实现一个些逻辑，但也增加了开发成本
+
+
+场景：
+
+- 比如判断消息是否消费成功，如果消费失败抛异常，则手动nack, 告诉队列该消息消费失败; 可以选择重试，重试到一定的次数，进入死信或则丢弃;Rabbit本身不支持重试次数，所以该功能可以在客户端代码实现
+
+
+代码：
+
+```java
+@Bean
+public RabbitListenerContainerFactory<?> rabbitListenerManualAckContainerFactory(ConnectionFactory connectionFactory){
+    SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+    factory.setConnectionFactory(connectionFactory);
+    factory.setMessageConverter(new Jackson2JsonMessageConverter());
+    factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);             //开启手动 ack
+    return factory;
+}
+```
+
+该配置可以代替factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+```yaml
+spring:
+  rabbitmq:
+    listener:
+      simple:
+        acknowledge-mode: manual
+```
+
+消费者
+```java
+@Component
+@RabbitListener(queues = "student", containerFactory = "rabbitListenerManualAckContainerFactory")
+public class StudentManualAckConsumer {
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @RabbitHandler
+    public void receive(Student student, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) {
+        System.out.println("manualAck : " + tag + "body:" + student);
+        try {
+            //手动ack
+            channel.basicAck(tag, false);
+            //消费失败,手动nack
+            //require为true，则消息会无限重试，如果为false，消息会进入死信或丢弃
+            channel.basicNack(tag, false, false);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+    }
+
+
+}
+```

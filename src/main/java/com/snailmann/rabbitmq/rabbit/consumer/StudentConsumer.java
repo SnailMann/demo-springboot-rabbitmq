@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 
-@Component
+/**
+ * 普通消费者
+ */
+
 @RabbitListener(queues = "student")
 public class StudentConsumer {
 
