@@ -91,6 +91,7 @@ public class RabbitConfig {
         cachingConnectionFactory.setHost(connectionFactory.getHost());
         cachingConnectionFactory.setPort(connectionFactory.getPort());
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
+
         //2. 声明confirmCallback
         rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
             if (ack) {

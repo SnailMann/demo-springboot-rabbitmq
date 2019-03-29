@@ -1,5 +1,6 @@
 package com.snailmann.rabbitmq.rabbit.producer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.snailmann.rabbitmq.entity.Student;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,7 @@ import java.util.Random;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StudentConfirmProducerTest {
+public class StudentConfirmSimpleProducerTest {
 
 
     Student student = new Student();
@@ -27,7 +28,7 @@ public class StudentConfirmProducerTest {
     }
 
     @Autowired
-    StudentConfirmProducer studentConfirmProducer;
+    StudentConfirmSimpleProducer studentConfirmProducer;
 
     /**
      * 测试成功案例
@@ -42,8 +43,20 @@ public class StudentConfirmProducerTest {
      *
      * @throws InterruptedException
      */
-    public void directCustomSend() throws InterruptedException {
+    @Test
+    public void directCustomSendTest() throws InterruptedException {
         studentConfirmProducer.directCustomSend("不存的交换机", "student", student);
     }
+
+    /**
+     * 测试失败案例
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void directCustomSendWithMessage() throws InterruptedException, JsonProcessingException {
+        studentConfirmProducer.directCustomSendWithMessage(null, "student", student);
+    }
+
 
 }

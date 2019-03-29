@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 手动ACK消费者
  */
-@Component
+
 @RabbitListener(queues = "student", containerFactory = "rabbitListenerManualAckContainerFactory")
 public class StudentManualAckConsumer {
 

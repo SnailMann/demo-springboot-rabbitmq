@@ -30,7 +30,7 @@ public class StudentReturnProducerTest {
     StudentReturnProducer studentReturnProducer;
 
     /**
-     * ok
+     * 测试成功
      */
     @Test
     public void directDefaultSend() {
@@ -40,12 +40,13 @@ public class StudentReturnProducerTest {
     /**
      * 测试失败
      */
+    @Test
     public void directCustomSend() throws InterruptedException {
         studentReturnProducer.directCustomSend("不存在的交换机", "不存在的路由键", student);
     }
 
-
+    @Test
     public void fanoutSend() throws InterruptedException {
-        studentReturnProducer.fanoutSend("amq.fanout",student);
+        studentReturnProducer.fanoutSend("amq.fanout", student);
     }
 }

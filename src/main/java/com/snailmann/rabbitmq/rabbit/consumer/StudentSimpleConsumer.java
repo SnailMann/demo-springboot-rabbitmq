@@ -3,6 +3,7 @@ package com.snailmann.rabbitmq.rabbit.consumer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snailmann.rabbitmq.entity.Student;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 /**
  * 普通消费者
  */
-
+@Component
 @RabbitListener(queues = "student")
-public class StudentConsumer {
+public class StudentSimpleConsumer {
 
     @Autowired
     ObjectMapper objectMapper;
@@ -27,6 +28,11 @@ public class StudentConsumer {
         System.out.println(student);
     }
 
+    /**
+     * 测试获取MessageProperties的信息
+     *
+     * @param message
+     */
     @RabbitHandler
     public void receiveMsg(Message message) {
         String json = new String(message.getBody(), StandardCharsets.UTF_8);
@@ -36,8 +42,10 @@ public class StudentConsumer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(message.getMessageProperties().toString());
 
 
     }
+
 
 }
