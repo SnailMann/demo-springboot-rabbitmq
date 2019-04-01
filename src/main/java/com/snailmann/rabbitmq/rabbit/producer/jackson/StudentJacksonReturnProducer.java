@@ -1,4 +1,4 @@
-package com.snailmann.rabbitmq.rabbit.producer;
+package com.snailmann.rabbitmq.rabbit.producer.jackson;
 
 
 import com.snailmann.rabbitmq.entity.Student;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class StudentReturnProducer {
+public class StudentJacksonReturnProducer {
 
     @Autowired
-    @Qualifier("rabbitReturnTemplate")
-    RabbitTemplate rabbitReturnTemplate;
+    @Qualifier("rabbitJacksonReturnTemplate")
+    RabbitTemplate rabbitJacksonReturnTemplate;
 
     /**
      * 点对点，直接模式 | 使用默认的交换机，和默认的routing key(既队列的名称)
@@ -27,9 +27,9 @@ public class StudentReturnProducer {
      */
     public void directDefaultSend(String queue, Student student) {
         log.info("direct default exchange with default routing key send : {}", student);
-        log.warn("{}", rabbitReturnTemplate.isReturnListener());
+        log.warn("{}", rabbitJacksonReturnTemplate.isReturnListener());
 
-        rabbitReturnTemplate.convertAndSend(queue, student);
+        rabbitJacksonReturnTemplate.convertAndSend(queue, student);
 
     }
 
@@ -43,7 +43,7 @@ public class StudentReturnProducer {
     public void directCustomSend(String exchange, String routingKey, Student student) throws InterruptedException {
         log.info("direct custom exchange with custom routing key send : {}", student);
 
-        rabbitReturnTemplate.convertAndSend("不存在的队列", routingKey, student);
+        rabbitJacksonReturnTemplate.convertAndSend("不存在的队列", routingKey, student);
 
 
     }
@@ -57,7 +57,7 @@ public class StudentReturnProducer {
      */
     public void fanoutSend(String exchange, Student student) throws InterruptedException {
         log.info("fanout send : {}", student);
-        rabbitReturnTemplate.convertAndSend(exchange, null, student);
+        rabbitJacksonReturnTemplate.convertAndSend(exchange, null, student);
 
 
     }

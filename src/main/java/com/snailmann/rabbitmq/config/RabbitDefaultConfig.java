@@ -2,37 +2,29 @@ package com.snailmann.rabbitmq.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
-public class RabbitConfig {
+public class RabbitDefaultConfig {
 
-
-    private static final MessageConverter messageConverter = new Jackson2JsonMessageConverter();
 
     @Autowired
     private ConnectionFactory connectionFactory;
 
 
-    @Bean
-    public AmqpAdmin amqpAdmin() {
-        return new RabbitAdmin(connectionFactory);
-    }
+
 
     /**
-     * 消费者监听的普通连接工厂
+     * 消费者监听的默认连接工厂
+     * 使用默认的消息转换器
      *
      * @return
      */
@@ -40,7 +32,6 @@ public class RabbitConfig {
     public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setMessageConverter(messageConverter);
         return factory;
     }
 
@@ -55,7 +46,6 @@ public class RabbitConfig {
     public RabbitListenerContainerFactory<?> rabbitListenerManualAckContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setMessageConverter(messageConverter);
         /**
          *  开启手动 ack
          */
@@ -65,7 +55,8 @@ public class RabbitConfig {
 
 
     /**
-     * RabbitTempalte的普通工厂
+     * RabbitTempalte的默认工厂
+     * 使用默认的SimpleMessageConverter消息转换器 | 不指定就是默认
      *
      * @return
      */
@@ -73,13 +64,11 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate();
         rabbitTemplate.setConnectionFactory(connectionFactory);
-        rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
     }
 
-
     /**
-     * 支持生产者confirm模式的rabbitTemplate
+     * 支持生产者confirm模式的默认rabbitTemplate
      *
      * @return
      */
@@ -101,13 +90,12 @@ public class RabbitConfig {
             }
         });
         rabbitTemplate.setConnectionFactory(cachingConnectionFactory);
-        rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
     }
 
 
     /**
-     * 支持生产者return模式的rabbitTemplate
+     * 支持生产者return模式的默认rabbitTemplate
      *
      * @return
      */
@@ -124,7 +112,6 @@ public class RabbitConfig {
         //3. 声明returnCallback
         rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> log.warn("message: {} , replyCode: {} , replyText: {} , exchange: {} , routingKey:{}", message, replyCode, replyText, exchange, routingKey));
         rabbitTemplate.setConnectionFactory(cachingConnectionFactory);
-        rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
     }
 

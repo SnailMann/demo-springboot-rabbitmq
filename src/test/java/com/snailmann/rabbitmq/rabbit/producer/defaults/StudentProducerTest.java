@@ -1,5 +1,6 @@
-package com.snailmann.rabbitmq.rabbit.producer;
+package com.snailmann.rabbitmq.rabbit.producer.defaults;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.snailmann.rabbitmq.entity.Student;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,11 +11,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.Random;
 
-import static org.junit.Assert.*;
-
 
 /**
- * RabbitTempalte生产端普通测试
+ * RabbitTempalte生产端普通测试 | Jackson消息转换器模式
  * 三种发生方式 direct,topic,fanout
  */
 @RunWith(SpringRunner.class)
@@ -36,7 +35,7 @@ public class StudentProducerTest {
      * ok
      */
     @Test
-    public void directDefaultSend() {
+    public void directDefaultSend() throws JsonProcessingException {
         studentProducer.directDefaultSend("student", student);
     }
 
@@ -44,7 +43,7 @@ public class StudentProducerTest {
      * 不ok，没有这种写法
      */
     @Test
-    public void directDefaultWithCustomKeySend() {
+    public void directDefaultWithCustomKeySend() throws JsonProcessingException {
         studentProducer.directDefaultWithCustomKeySend("custom-student", student);
     }
 
@@ -52,7 +51,7 @@ public class StudentProducerTest {
      * ok
      */
     @Test
-    public void directCustomWithCustomKeySend() {
+    public void directCustomWithCustomKeySend() throws JsonProcessingException {
         studentProducer.directCustomWithCustomKeySend("direct-rabbit-test", "custom-student", student);
     }
 
@@ -61,7 +60,7 @@ public class StudentProducerTest {
      * ok
      */
     @Test
-    public void fanoutSend() {
+    public void fanoutSend() throws JsonProcessingException {
         studentProducer.fanoutSend("amq.fanout", student);
     }
 
@@ -69,7 +68,7 @@ public class StudentProducerTest {
      * ok
      */
     @Test
-    public void topicSend() {
+    public void topicSend() throws JsonProcessingException {
         studentProducer.topicSend("amq.topic", "test.student", student);
     }
 }

@@ -1,4 +1,4 @@
-package com.snailmann.rabbitmq.rabbit.consumer;
+package com.snailmann.rabbitmq.rabbit.consumer.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snailmann.rabbitmq.entity.Student;
@@ -16,14 +16,14 @@ import java.nio.charset.StandardCharsets;
 /**
  * 普通消费者
  */
-@Component
+
 @RabbitListener(queues = "student")
-public class StudentSimpleConsumer {
+public class StudentJacksonConsumer {
 
     @Autowired
     ObjectMapper objectMapper;
 
-    @RabbitHandler
+
     public void receive(Student student) {
         System.out.println(student);
     }
@@ -33,7 +33,6 @@ public class StudentSimpleConsumer {
      *
      * @param message
      */
-    @RabbitHandler
     public void receiveMsg(Message message) {
         String json = new String(message.getBody(), StandardCharsets.UTF_8);
         try {
@@ -43,9 +42,6 @@ public class StudentSimpleConsumer {
             e.printStackTrace();
         }
         System.out.println(message.getMessageProperties().toString());
-
-
     }
-
 
 }

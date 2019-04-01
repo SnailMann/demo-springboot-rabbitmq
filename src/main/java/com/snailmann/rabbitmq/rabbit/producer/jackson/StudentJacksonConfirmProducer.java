@@ -1,14 +1,10 @@
-package com.snailmann.rabbitmq.rabbit.producer;
+package com.snailmann.rabbitmq.rabbit.producer.jackson;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snailmann.rabbitmq.entity.Student;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageBuilder;
-import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +16,10 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class StudentConfirmSimpleProducer {
+public class StudentJacksonConfirmProducer {
 
     @Autowired
-    RabbitTemplate rabbitConfirmTemplate;
+    RabbitTemplate rabbitJacksonConfirmTemplate;
     @Autowired
     ObjectMapper objectMapper;
 
@@ -37,9 +33,10 @@ public class StudentConfirmSimpleProducer {
      */
     public void directDefaultSend(String queue, Student student) throws InterruptedException {
         log.info("direct default exchange with default routing key send : {}", student);
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             Thread.sleep(400);
-            rabbitConfirmTemplate.convertAndSend(queue, student, new CorrelationData(student.getName()));
+            CorrelationData correlationData = new CorrelationData(student.getName());
+            rabbitJacksonConfirmTemplate.convertAndSend(queue, student, correlationData);
         }
 
     }
@@ -57,10 +54,18 @@ public class StudentConfirmSimpleProducer {
         log.info("direct custom exchange with custom routing key send : {}", student);
         for (int i = 0; i < 1; i++) {
             Thread.sleep(400);
-            rabbitConfirmTemplate.convertAndSend(exchange, routingKey, student, new CorrelationData(student.getName()));
+            CorrelationData correlationData = new CorrelationData(student.getName());
+            rabbitJacksonConfirmTemplate.convertAndSend(exchange, routingKey, student, correlationData);
         }
     }
 
+
+    public void directCustomSendWithJson(String exchange,String routingKey,Student student) throws InterruptedException, JsonProcessingException {
+        for (int i = 0; i < 1; i++) {
+            Thread.sleep(400);
+            rabbitJacksonConfirmTemplate.convertAndSend(exchange, routingKey, objectMapper.writeValueAsString(student), new CorrelationData(student.getName()));
+        }
+    }
 
 
 }

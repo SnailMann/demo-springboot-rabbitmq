@@ -1,6 +1,7 @@
-package com.snailmann.rabbitmq.rabbit.producer;
+package com.snailmann.rabbitmq.rabbit.producer.jackson;
 
 import com.snailmann.rabbitmq.entity.Student;
+import com.snailmann.rabbitmq.rabbit.producer.jackson.StudentJacksonReturnProducer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 import java.util.Random;
 
-import static org.junit.Assert.*;
-
 /**
  * 生产者开启Return测试
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class StudentReturnProducerTest {
+public class StudentJacksonReturnProducerTest {
     Student student = new Student();
 
     {
@@ -27,14 +26,14 @@ public class StudentReturnProducerTest {
     }
 
     @Autowired
-    StudentReturnProducer studentReturnProducer;
+    StudentJacksonReturnProducer studentJacksonReturnProducer;
 
     /**
      * 测试成功
      */
     @Test
     public void directDefaultSend() {
-        studentReturnProducer.directDefaultSend("student", student);
+        studentJacksonReturnProducer.directDefaultSend("student", student);
     }
 
     /**
@@ -42,11 +41,11 @@ public class StudentReturnProducerTest {
      */
     @Test
     public void directCustomSend() throws InterruptedException {
-        studentReturnProducer.directCustomSend("不存在的交换机", "不存在的路由键", student);
+        studentJacksonReturnProducer.directCustomSend("不存在的交换机", "不存在的路由键", student);
     }
 
     @Test
     public void fanoutSend() throws InterruptedException {
-        studentReturnProducer.fanoutSend("amq.fanout", student);
+        studentJacksonReturnProducer.fanoutSend("amq.fanout", student);
     }
 }

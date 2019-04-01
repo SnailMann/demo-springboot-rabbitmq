@@ -1,26 +1,33 @@
-package com.snailmann.rabbitmq.rabbit.producer;
+package com.snailmann.rabbitmq.rabbit.producer.defaults;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snailmann.rabbitmq.entity.Student;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ */
 @Slf4j
 @Component
 public class StudentProducer {
 
     @Autowired
     RabbitTemplate rabbitTemplate;
+    @Autowired
+    ObjectMapper objectMapper;
 
     /**
      * 点对点，直接模式 | 使用默认的交换机，和默认的routing key(既队列的名称)
      *
      * @param student
      */
-    public void directDefaultSend(String queue, Student student) {
+    public void directDefaultSend(String queue, Student student) throws JsonProcessingException {
         log.info("direct default exchange with default routing key send : {}", student);
-        rabbitTemplate.convertAndSend(queue, student);
+        rabbitTemplate.convertAndSend(queue, objectMapper.writeValueAsString(student));
     }
 
 
@@ -32,9 +39,9 @@ public class StudentProducer {
      * @param routingKey
      * @param student
      */
-    public void directDefaultWithCustomKeySend(String routingKey, Student student) {
+    public void directDefaultWithCustomKeySend(String routingKey, Student student) throws JsonProcessingException {
         log.info("direct default exchange with custom routing key send : {}", student);
-        rabbitTemplate.convertAndSend(routingKey, student);
+        rabbitTemplate.convertAndSend(routingKey,  objectMapper.writeValueAsString(student));
     }
 
     /**
@@ -44,9 +51,9 @@ public class StudentProducer {
      * @param routingKey
      * @param student
      */
-    public void directCustomWithCustomKeySend(String exchange, String routingKey, Student student) {
+    public void directCustomWithCustomKeySend(String exchange, String routingKey, Student student) throws JsonProcessingException {
         log.info("direct custom exchage with custom routing key send: {}", student);
-        rabbitTemplate.convertAndSend(exchange, routingKey, student);
+        rabbitTemplate.convertAndSend(exchange, routingKey,  objectMapper.writeValueAsString(student));
     }
 
 
@@ -57,9 +64,9 @@ public class StudentProducer {
      * @param exchange
      * @param student
      */
-    public void fanoutSend(String exchange, Student student) {
+    public void fanoutSend(String exchange, Student student) throws JsonProcessingException {
         log.info("fault default exchage send: {}", student);
-        rabbitTemplate.convertAndSend(exchange, null, student);
+        rabbitTemplate.convertAndSend(exchange, null,  objectMapper.writeValueAsString(student));
     }
 
 
@@ -68,9 +75,9 @@ public class StudentProducer {
      *
      * @param student
      */
-    public void topicSend(String exchange, String routingKey, Student student) {
+    public void topicSend(String exchange, String routingKey, Student student) throws JsonProcessingException {
         log.info("topic custom exchage with custom routing key send: {}", student);
-        rabbitTemplate.convertAndSend(exchange, routingKey, student);
+        rabbitTemplate.convertAndSend(exchange, routingKey,  objectMapper.writeValueAsString(student));
     }
 
 }

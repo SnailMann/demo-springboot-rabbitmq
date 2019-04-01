@@ -224,7 +224,7 @@ spring:
 消费者
 ```java
 @Component
-@RabbitListener(queues = "student", containerFactory = "rabbitListenerManualAckContainerFactory")
+@RabbitListener(queues = "student", containerFactory = "rabbitListenerManualAckJacksonContainerFactory")
 public class StudentManualAckConsumer {
 
     @Autowired

@@ -1,4 +1,4 @@
-package com.snailmann.rabbitmq.rabbit.consumer;
+package com.snailmann.rabbitmq.rabbit.consumer.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
@@ -19,8 +19,8 @@ import java.nio.charset.StandardCharsets;
  * 手动ACK消费者
  */
 
-@RabbitListener(queues = "student", containerFactory = "rabbitListenerManualAckContainerFactory")
-public class StudentManualAckConsumer {
+@RabbitListener(queues = "student", containerFactory = "rabbitListenerJacksonManualAckContainerFactory")
+public class StudentJacksonManualAckConsumer {
 
     @Autowired
     ObjectMapper objectMapper;
