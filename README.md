@@ -5,6 +5,9 @@ The following guides illustrates how to use certain features concretely:
 
 * [Messaging with RabbitMQ](https://spring.io/guides/gs/messaging-rabbitmq/)
 
+### 测试注意
+
+- 跑测试用例的时候，要注意，测试用例也是会启动Spring容器的，所以如果有@RabbitListener，也是会开启消费的，不要给这个情况影响了测试结果
 
 ### RabbitMQ的使用
 
@@ -55,7 +58,24 @@ public class RabbitConfig {
 - 如果项目有消费者，则需要配置rabbitListenerContainerFactory
 - 如果项目有生成者，则需要配置rabbitTemplate
 
+### MessageConvertor
+常用的MessageConvertor有
 
+- `SimpleMessageConvertor`
+byte[]类型则不做转换，String类型转换成byte[], 其他Object通过Java序列化方式转换成byte[]
+- `Jackson2JsonMessageConvertor` 
+Json与对象之间的序列化与反序列化
+- `自定义MessageConvertor`
+
+
+
+
+
+### @RabbitListener和@RabbitHandler
+
+- 通常情况下@RabbitListener可以放在类上，也可以放在方法上，@RabbitHandler可以放在方法上
+- 使用不同的MessageConvertor，对@RabbitListener是放在类上还是方法上，以及是否需要@RabbitHandler是有影响的
+- 在使用默认的SimpleMessageConvertor的情况下
 
 ### RabbitMQ的四种模式
 

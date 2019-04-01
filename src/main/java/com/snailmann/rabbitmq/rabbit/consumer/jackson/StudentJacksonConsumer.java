@@ -17,7 +17,8 @@ import java.nio.charset.StandardCharsets;
  * 普通消费者
  */
 
-@RabbitListener(queues = "student")
+@Component
+
 public class StudentJacksonConsumer {
 
     @Autowired
@@ -33,6 +34,7 @@ public class StudentJacksonConsumer {
      *
      * @param message
      */
+    @RabbitListener(queues = "student", containerFactory = "rabbitListenerJacksonContainerFactory")
     public void receiveMsg(Message message) {
         String json = new String(message.getBody(), StandardCharsets.UTF_8);
         try {
