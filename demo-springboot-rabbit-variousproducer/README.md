@@ -31,7 +31,7 @@ java.lang.IllegalArgumentException: SimpleMessageConverter only supports String,
 
 
 <center>
-<img src="../refer/images/rabbit-simplemessageconvertor-send.jpg">
+<img src="../refer/images/rabbit-ui-message-simplemsgconverter.png">
 </center>
 
 发送byte[]字节数组
@@ -55,4 +55,4 @@ java.lang.IllegalArgumentException: SimpleMessageConverter only supports String,
 
 |context_type|payload|
 | :--- | :--- |
-|application/x-java-serialized-object|rO0ABXNyADVjb20uc25haWxtYW5uLnJhYmJpdG1xLnZhcmlvdXNwcm9kdWNlci5lbnRpdHkuU3R1ZGVudDc4rEui1phFAgADSQADYWdlTAAIYmlyc3RkYX...省略|
+| application/x-java-serialized-object |rO0ABXNyADVjb20uc25haWxtYW5uLnJhYmJpdG1xLnZhcmlvdXNwc...省略|

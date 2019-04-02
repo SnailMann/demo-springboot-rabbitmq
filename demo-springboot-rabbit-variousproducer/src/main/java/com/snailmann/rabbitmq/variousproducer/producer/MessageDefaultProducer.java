@@ -34,7 +34,7 @@ public class MessageDefaultProducer {
     }
 
     /**
-     * 使用SimpleMessageConverter来发送字节数组
+     * 使用SimpleMessageConverter来发送字节数组 | 与Serializable无关
      *
      * @param bytes
      */
