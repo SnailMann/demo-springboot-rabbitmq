@@ -1,5 +1,7 @@
 package com.snailmann.rabbitmq.variousproducer.producer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.snailmann.rabbitmq.variousproducer.entity.Student;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,8 @@ public class MessageJacksonProducerTest {
 
     @Autowired
     private MessageJacksonProducer messageJacksonProducer;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     Student student = new Student();
 
@@ -31,5 +35,25 @@ public class MessageJacksonProducerTest {
     @Test
     public void send() {
         messageJacksonProducer.send(student);
+    }
+
+    /**
+     * 使用Jackson2JsonMessageConverter发送字符串对象
+     *
+     * @throws JsonProcessingException
+     */
+    @Test
+    public void sendString() throws JsonProcessingException {
+        messageJacksonProducer.sendString(objectMapper.writeValueAsString(student));
+    }
+
+    /**
+     * 使用Jackson2JsonMessageConverter发送bytep[]数组
+     *
+     * @throws JsonProcessingException
+     */
+    @Test
+    public void sendBytes() throws JsonProcessingException {
+        messageJacksonProducer.sendBytes(objectMapper.writeValueAsBytes(student));
     }
 }

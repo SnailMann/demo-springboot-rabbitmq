@@ -50,9 +50,46 @@ java.lang.IllegalArgumentException: SimpleMessageConverter only supports String,
 | UTF-8| text/plain |{"name":"Jerry","age":45,"birstday":"2019-04-02T02:52:00.399+0000"}
 
 
-发送实现了Serializable接口的Object
+发送实现了Serializable接口的Object | 如果没有实现Serializable接口是会报错的
 
 
 |context_type|payload|
 | :--- | :--- |
 | application/x-java-serialized-object |rO0ABXNyADVjb20uc25haWxtYW5uLnJhYmJpdG1xLnZhcmlvdXNwc...省略|
+
+
+
+## Jackson2JsonMessageConvertor
+
+- 将所有东西都使用Json来序列化和反序列化
+
+
+### 传输byte[],String, 实现了Serializable接口的Object
+
+<center>
+<img src="/refer/images/rabbit-ui-message-jacksonmsgconverter.jpg">
+</center>
+
+
+发送String对象
+
+|_TypeId |contend_encoding |context_type|payload|
+| :--- | :--- | :--- | :--- |
+| java.lang.String| UTF-8 | application/json | "{\"name\":\"Jerry\",\"age\":45,\"birstday\":\"2019-04-02T08:32:04.384+0000\"}" |
+
+
+发送byte[]数组
+
+
+|_TypeId |contend_encoding |context_type|payload|
+| :--- | :--- | :--- | :--- |
+| [B| UTF-8 | application/json | "eyJuYW1lIjoiSmVycnkiLCJhZ2UiOjQ1LCJiNDE6MzkuODI3KzAwMDAifQ==" |
+
+
+发送Java对象 | 不用管是否
+
+
+|_TypeId |contend_encoding |context_type|payload|
+| :--- | :--- | :--- | :--- |
+| com.snailmann.xxx.entity.Student| UTF-8 | application/json | {"name":"Jerry","age":45,"birstday":1554194014200} |
+
