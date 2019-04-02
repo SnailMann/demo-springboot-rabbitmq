@@ -28,7 +28,7 @@ public class StudentReturnProducerTest {
     StudentReturnProducer studentReturnProducer;
 
     /**
-     * 测试成功
+     * 测试成功 | 投递defalut的交换机，根据存在的路由键路由队列
      */
     @Test
     public void directDefaultSend() {
@@ -36,11 +36,11 @@ public class StudentReturnProducerTest {
     }
 
     /**
-     * 测试失败
+     * 测试失败 | 投递defalut的交换机，根据不存在的路由键路由，所以到达交换机，但肯定路由不到队列
      */
     @Test
-    public void directCustomSend() throws InterruptedException {
-        studentReturnProducer.directCustomSend(null, "不存在的路由键", student);
+    public void directCustomSend() {
+        studentReturnProducer.directDefaultSend("不存在的路由键", student);
     }
 
     @Test

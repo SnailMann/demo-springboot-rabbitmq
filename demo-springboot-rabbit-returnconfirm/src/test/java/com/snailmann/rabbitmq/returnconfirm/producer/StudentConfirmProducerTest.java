@@ -32,7 +32,7 @@ public class StudentConfirmProducerTest {
     StudentConfirmProducer studentConfirmProducer;
 
     /**
-     * 测试成功案例
+     * 测试成功案例 | 发送到成功的交换机中
      */
     @Test
     public void directDefaultSend() throws InterruptedException {
@@ -40,7 +40,7 @@ public class StudentConfirmProducerTest {
     }
 
     /**
-     * 测试失败案例
+     * 测试失败案例 | Broker中没有交换机接收到投递的信息
      *
      * @throws InterruptedException
      */
@@ -48,7 +48,6 @@ public class StudentConfirmProducerTest {
     public void directCustomSend() throws InterruptedException {
         studentConfirmProducer.directCustomSend("不存的交换机", "student", student);
     }
-
 
 
 }

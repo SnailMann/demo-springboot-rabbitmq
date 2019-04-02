@@ -1,4 +1,4 @@
-package com.snailmann.rabbitmq.simple;
+package com.snailmann.rabbitmq.returnconfirm.simple;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Consumer;

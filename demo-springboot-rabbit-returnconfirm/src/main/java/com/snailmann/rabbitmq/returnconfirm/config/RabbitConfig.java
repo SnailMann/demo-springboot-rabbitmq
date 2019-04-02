@@ -88,7 +88,7 @@ public class RabbitConfig {
         //2. 声明强制性
         rabbitTemplate.setMandatory(true);
         //3. 声明returnCallback
-        rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> log.warn("message: {} , replyCode: {} , replyText: {} , exchange: {} , routingKey:{}", message, replyCode, replyText, exchange, routingKey));
+        rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> log.error("message: {} , replyCode: {} , replyText: {} , exchange: {} , routingKey:{}", message, replyCode, replyText, exchange, routingKey));
         rabbitTemplate.setConnectionFactory(cachingConnectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
