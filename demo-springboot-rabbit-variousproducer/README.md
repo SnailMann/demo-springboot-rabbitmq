@@ -55,5 +55,4 @@ java.lang.IllegalArgumentException: SimpleMessageConverter only supports String,
 
 |context_type|payload|
 | :--- | :--- |
-|application/x-java-serialized-object|rO0ABXNyADVjb20uc25haWxtYW5uLnJhYmJpdG1xLnZhcmlvdXNwcm9kdWNlci5lbnRpdHkuU3R1ZGVudDc4rE
-ui1phFAgADSQADYWdlTAAIYmlyc3RkYXl0ABBMamF2YS91dGlsL0RhdGU7TAAEbmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO3hwAAAALXNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAWnb43EUeHQABUplcnJ5|
+|application/x-java-serialized-object|rO0ABXNyADVjb20uc25haWxtYW5uLnJhYmJpdG1xLnZhcmlvdXNwcm9kdWNlci5lbnRpdHkuU3R1ZGVudDc4rEui1phFAgADSQADYWdlTAAIYmlyc3RkYX...省略|
