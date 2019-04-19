@@ -23,3 +23,8 @@
 
 - json格式的消息被json格式的监听者消费时，必须保证Type_id是一致的，不然是会消费失败的，抛出异常（@RabbitLisenter在类上，@RabbitHandler在方法上的情况） | @RabbitLisenter单独放在方法上，即使包名不一致，也是可以解析出数据的
 
+## @RabbitListener与@RabbitHandler
+
+- @RabbitLisenter可以放在类上，也可以放在方法上
+- @RabbitLisenter单独放在方法上的时候，根据MessageConvertor的特性，会直接转换成参数类型
+- @RabbitLisenter放在类上上，要搭配@RabbitHandler使用，Lisenter在类上，Handler在方法上。Lisenter声明队列，Handler代表处理的消息类型
