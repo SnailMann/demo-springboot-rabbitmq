@@ -28,3 +28,4 @@
 - @RabbitLisenter可以放在类上，也可以放在方法上
 - @RabbitLisenter单独放在方法上的时候，根据MessageConvertor的特性，会直接转换成参数类型
 - @RabbitLisenter放在类上上，要搭配@RabbitHandler使用，Lisenter在类上，Handler在方法上。Lisenter声明队列，Handler代表处理的消息类型
+- 如果@RabbitLisenter修饰的类下，所有被@RabbitHandler的方法中，没有可接受消息类型的方法，就会抛出异常
