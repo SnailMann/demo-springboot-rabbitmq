@@ -13,6 +13,7 @@ The following guides illustrates how to use certain features concretely:
 |demo-springboot-rabbit-normal|简单的测试消息收发||
 |demo-springboot-rabbit-returnconfirm|简单的测试return,confirm机制||
 |demo-springboot-rabbit-ack|简单的测试手动ack机制||
+|demo-springboot-rabbit-dle|简单的测试Rabbit死信队列机制| [README](demo-springboot-rabbit-dle/README.md)|
 |demo-springboot-rabbit-msgconvertor|||
 |demo-springboot-rabbit-variousproducer|生产者多种发送消息的方式|[README](demo-springboot-rabbit-variousproducer/README.md)|
 |demo-springboot-rabbit-variousconsumer|||
