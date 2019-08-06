@@ -6,7 +6,7 @@ The following guides illustrates how to use certain features concretely:
 * [Messaging with RabbitMQ](https://spring.io/guides/gs/messaging-rabbitmq/)
 * [rabbit笔记](refer/docs/rabbit.md)
 
-### 项目
+### 项目 
 
 |项目名称|描述|备注|
 | --- | --- | ---|
